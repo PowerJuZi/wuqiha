@@ -38,10 +38,10 @@ import net.ccbluex.liquidbounce.utils.misc.HttpUtils
 object LiquidBounce {
 
     // Client information
-    const val CLIENT_NAME = "LiquidSense"
+    const val CLIENT_NAME = "Uchiha Client"
     const val CLIENT_VERSION = 1
-    const val CLIENT_CREATOR = "CCBlueX"
-    const val MINECRAFT_VERSION = Backend.MINECRAFT_VERSION
+    const val CLIENT_CREATOR = "PacketJuZi&AquaVase"
+    const val MINECRAFT_VERSION = "0.1.0"
     const val CLIENT_CLOUD = "https://cloud.liquidbounce.net/LiquidBounce"
 
     var isStarting = false

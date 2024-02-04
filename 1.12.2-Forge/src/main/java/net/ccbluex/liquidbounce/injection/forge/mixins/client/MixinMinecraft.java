@@ -115,7 +115,7 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V", shift = At.Shift.AFTER))
     private void createDisplay(CallbackInfo callbackInfo) {
-        Display.setTitle(LiquidBounce.CLIENT_NAME + " b" + LiquidBounce.CLIENT_VERSION + " | " + LiquidBounce.MINECRAFT_VERSION + " | By AquaVitTeam");
+        Display.setTitle("Uchiha Client | 宇智波 客户端 | 无论现实还是幻术,你都已经输了。");
     }
 
     @Inject(method = "displayGuiScreen", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;currentScreen:Lnet/minecraft/client/gui/GuiScreen;", shift = At.Shift.AFTER))
