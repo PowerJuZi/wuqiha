@@ -13,6 +13,7 @@ import net.ccbluex.liquidbounce.event.UpdateEvent
 import net.ccbluex.liquidbounce.features.command.Command
 import net.ccbluex.liquidbounce.utils.ClientUtils
 import net.ccbluex.liquidbounce.utils.render.RenderUtils
+import net.minecraft.util.ResourceLocation
 
 class TacoCommand : Command("taco"), Listenable {
     private var toggle = false
@@ -52,7 +53,7 @@ class TacoCommand : Command("taco"), Listenable {
 
         running += 0.15f * RenderUtils.deltaTime
         val scaledResolution = classProvider.createScaledResolution(mc)
-        RenderUtils.drawImage(tacoTextures[image], running.toInt(), scaledResolution.scaledHeight - 60, 64, 32)
+        RenderUtils.drawImage(tacoTextures[image] as ResourceLocation, running.toInt(), scaledResolution.scaledHeight - 60, 64, 32)
         if (scaledResolution.scaledWidth <= running)
             running = -64f
     }

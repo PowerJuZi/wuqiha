@@ -43,6 +43,7 @@ open class HUD : MinecraftInstance() {
                 .addElement(Text.defaultClient())
                 .addElement(TabGUI())
                 .addElement(Arraylist())
+            .addElement(GameInfo())
                 .addElement(ScoreboardElement())
                 .addElement(Armor())
                 .addElement(Effects())

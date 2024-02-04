@@ -22,7 +22,9 @@ object ColorUtils {
 
     @JvmField
     val hexColors = IntArray(16)
-
+    fun reAlpha(color: Color,alpha: Int): Color{
+        return Color(color.red,color.green,color.blue,alpha)
+    }
     init {
         repeat(16) { i ->
             val baseColor = (i shr 3 and 1) * 85

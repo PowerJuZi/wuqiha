@@ -16,7 +16,7 @@ interface IFontRenderer {
     fun drawString(str: String, x: Float, y: Float, color: Int, shadow: Boolean): Int
     fun drawCenteredString(text: String, x: Float, y: Float, color: Int): Int
     fun drawCenteredString(text: String, x: Float, y: Float, color: Int, shadow: Boolean): Int
-    fun drawStringWithShadow(text: String, x: Int, y: Int, color: Int): Int
+    fun drawStringWithShadow(text: String, x: Float, y: Float, color: Int): Int
     fun isGameFontRenderer(): Boolean
     fun getGameFontRenderer(): GameFontRenderer
     fun drawString(str: String, x: Float, y: Float, color: Int): Int

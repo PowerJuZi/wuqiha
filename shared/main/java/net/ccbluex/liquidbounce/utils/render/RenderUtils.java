@@ -19,6 +19,8 @@ import net.ccbluex.liquidbounce.ui.font.Fonts;
 import net.ccbluex.liquidbounce.utils.MinecraftInstance;
 import net.ccbluex.liquidbounce.utils.block.BlockUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
@@ -27,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Math.*;
+import static net.minecraft.client.renderer.GlStateManager.color;
 import static org.lwjgl.opengl.GL11.*;
 
 public final class RenderUtils extends MinecraftInstance {
@@ -83,7 +86,29 @@ public final class RenderUtils extends MinecraftInstance {
         mc.getFontRendererObj().drawString(str, x, (int) (y -1.0F),color2);
         mc.getFontRendererObj().drawString(str, x, y, color);
     }
-
+    public static void drawTexturedRect(float x, float y, float width, float height, String image) {
+        glPushMatrix();
+        final boolean enableBlend = glIsEnabled(GL_BLEND);
+        final boolean disableAlpha = !glIsEnabled(GL_ALPHA_TEST);
+        if (!enableBlend) glEnable(GL_BLEND);
+        if (!disableAlpha) glDisable(GL_ALPHA_TEST);
+        mc.getTextureManager().bindTexture((IResourceLocation) new ResourceLocation("liquidbounce/shadow/" + image + ".png"));
+        color(1F, 1F, 1F, 1F);
+        RenderUtils.drawModalRectWithCustomSizedTexture((int) x, (int) y, (float) 0, (float) 0, (int) width, (int) height, width, height);
+        if (!enableBlend) glDisable(GL_BLEND);
+        if (!disableAlpha) glEnable(GL_ALPHA_TEST);
+        glPopMatrix();
+    }
+    public static void drawShadow(float x, float y, float width, float height) {
+        drawTexturedRect(x - 9, y - 9, 9, 9, "paneltopleft");
+        drawTexturedRect(x - 9, y + height, 9, 9, "panelbottomleft");
+        drawTexturedRect(x + width, y + height, 9, 9, "panelbottomright");
+        drawTexturedRect(x + width, y - 9, 9, 9, "paneltopright");
+        drawTexturedRect(x - 9, y, 9, height, "panelleft");
+        drawTexturedRect(x + width, y, 9, height, "panelright");
+        drawTexturedRect(x, y - 9, width, 9, "paneltop");
+        drawTexturedRect(x, y + height, width, 9, "panelbottom");
+    }
     public static void drawGradientSideways(double left, double top, double right, double bottom, int col1, int col2) {
         float f = (col1 >> 24 & 0xFF) / 255.0F;
         float f1 = (col1 >> 16 & 0xFF) / 255.0F;
@@ -514,14 +539,56 @@ public final class RenderUtils extends MinecraftInstance {
 
         glPopAttrib();
     }
+    public static void drawLimitedCircle(final float lx, final float ly, final float x2, final float y2,final int xx, final int yy, final float radius, final Color color) {
+        int sections = 50;
+        double dAngle = 2 * Math.PI / sections;
+        float x, y;
 
-    public static void drawImage(IResourceLocation image, int x, int y, int width, int height) {
+        glPushAttrib(GL_ENABLE_BIT);
+
+        glEnable(GL_BLEND);
+        glDisable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_LINE_SMOOTH);
+        glBegin(GL_TRIANGLE_FAN);
+
+        for (int i = 0; i < sections; i++) {
+            x = (float) (radius * Math.sin((i * dAngle)));
+            y = (float) (radius * Math.cos((i * dAngle)));
+
+            glColor4f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, color.getAlpha() / 255F);
+            glVertex2f(Math.min(x2,Math.max(xx + x,lx)), Math.min(y2,Math.max(yy + y,ly)));
+        }
+
+        GlStateManager.color(0, 0, 0);
+
+        glEnd();
+
+        glPopAttrib();
+    }
+    public static float getAnimationState(float animation, float finalState, float speed) {
+        final float add = deltaTime * speed;
+        if (animation < finalState) {
+            if (animation + add < finalState) {
+                animation += add;
+            } else {
+                animation = finalState;
+            }
+        } else if (animation - add > finalState) {
+            animation -= add;
+        } else {
+            animation = finalState;
+        }
+        return animation;
+    }
+
+    public static void drawImage(ResourceLocation image, int x, int y, int width, int height) {
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glDepthMask(false);
         GL14.glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
         glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(image);
+        mc.getTextureManager().bindTexture((IResourceLocation) image);
         drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
         glDepthMask(true);
         glDisable(GL_BLEND);

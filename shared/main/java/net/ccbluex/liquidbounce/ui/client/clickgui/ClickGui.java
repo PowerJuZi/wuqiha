@@ -20,6 +20,7 @@ import net.ccbluex.liquidbounce.ui.client.hud.designer.GuiHudDesigner;
 import net.ccbluex.liquidbounce.ui.font.AWTFontRenderer;
 import net.ccbluex.liquidbounce.utils.EntityUtils;
 import net.ccbluex.liquidbounce.utils.render.RenderUtils;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -213,7 +214,7 @@ public class ClickGui extends WrappedGuiScreen {
 
         representedScreen.drawDefaultBackground();
 
-        RenderUtils.drawImage(hudIcon, 9, representedScreen.getHeight() - 41, 32, 32);
+        RenderUtils.drawImage((ResourceLocation) hudIcon, 9, representedScreen.getHeight() - 41, 32, 32);
 
         GL11.glScaled(scale, scale, scale);
 

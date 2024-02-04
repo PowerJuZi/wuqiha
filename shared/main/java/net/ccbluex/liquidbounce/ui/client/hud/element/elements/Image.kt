@@ -13,6 +13,7 @@ import net.ccbluex.liquidbounce.utils.misc.MiscUtils
 import net.ccbluex.liquidbounce.utils.misc.RandomUtils
 import net.ccbluex.liquidbounce.utils.render.RenderUtils
 import net.ccbluex.liquidbounce.value.TextValue
+import net.minecraft.util.ResourceLocation
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files
@@ -72,7 +73,7 @@ class Image : Element() {
      * Draw element
      */
     override fun drawElement(): Border {
-        RenderUtils.drawImage(resourceLocation, 0, 0, width / 2, height / 2)
+        RenderUtils.drawImage(resourceLocation as ResourceLocation, 0, 0, width / 2, height / 2)
 
         return Border(0F, 0F, width / 2F, height / 2F)
     }

@@ -6,6 +6,7 @@
 package net.ccbluex.liquidbounce.ui.client.hud.element.elements
 
 import net.ccbluex.liquidbounce.LiquidBounce
+import net.ccbluex.liquidbounce.ui.client.hud.designer.GuiHudDesigner
 import net.ccbluex.liquidbounce.ui.client.hud.element.Border
 import net.ccbluex.liquidbounce.ui.client.hud.element.Element
 import net.ccbluex.liquidbounce.ui.client.hud.element.ElementInfo
@@ -13,7 +14,8 @@ import net.ccbluex.liquidbounce.ui.client.hud.element.Side
 import net.ccbluex.liquidbounce.ui.font.Fonts
 import net.ccbluex.liquidbounce.utils.render.AnimationUtils
 import net.ccbluex.liquidbounce.utils.render.RenderUtils
-import org.lwjgl.opengl.GL11
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.util.ResourceLocation
 import java.awt.Color
 
 /**
@@ -35,7 +37,7 @@ class Notifications(x: Double = 0.0, y: Double = 30.0, scale: Float = 1F,
         if (LiquidBounce.hud.notifications.size > 0)
             LiquidBounce.hud.notifications[0].drawNotification()
 
-        if (classProvider.isGuiHudDesigner(mc.currentScreen)) {
+        if ((mc.currentScreen)as GuiHudDesigner is  GuiHudDesigner ) {
             if (!LiquidBounce.hud.notifications.contains(exampleNotification))
                 LiquidBounce.hud.addNotification(exampleNotification)
 
@@ -71,12 +73,16 @@ class Notification(private val message: String) {
      * Draw notification
      */
     fun drawNotification() {
-        // Draw notification
-        RenderUtils.drawRect(-x + 8 + textLength, 0F, -x, -20F, Color.BLACK.rgb)
-        RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(0, 160, 255).rgb)
-        Fonts.font35.drawString(message, -x + 4, -14F, Int.MAX_VALUE)
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
+        RenderUtils.drawRect(-x-22,-20f,22f,0f,Color(230 ,230 ,250,
+            140).rgb)
+        RenderUtils.drawImage(ResourceLocation("liquidbounce/png/tips.png"),(-x-20).toInt(),-20,20,20)
 
+        Fonts.font35.drawStringWithShadow(message, -x + 4, -14F, Int.MAX_VALUE)
+        GlStateManager.resetColor()
+        RenderUtils.drawFilledCircle((-x-22).toInt(),-20,10f,Color(
+            230, 230, 250,
+            140
+        ))
         // Animation
         val delta = RenderUtils.deltaTime
         val width = textLength + 8F
@@ -110,5 +116,6 @@ class Notification(private val message: String) {
             FadeState.END -> LiquidBounce.hud.removeNotification(this)
         }
     }
+
 }
 

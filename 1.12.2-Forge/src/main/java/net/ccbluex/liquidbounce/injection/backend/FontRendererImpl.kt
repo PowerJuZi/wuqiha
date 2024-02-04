@@ -26,7 +26,7 @@ class FontRendererImpl(val wrapped: FontRenderer) : IFontRenderer {
 
     override fun drawCenteredString(text: String, x: Float, y: Float, color: Int, shadow: Boolean) = drawString(text, x - getStringWidth(text) / 2F, y, color, shadow)
 
-    override fun drawStringWithShadow(text: String, x: Int, y: Int, color: Int) = wrapped.drawStringWithShadow(text, x.toFloat(), y.toFloat(), color)
+    override fun drawStringWithShadow(text: String, x: Float, y: Float, color: Int) = wrapped.drawStringWithShadow(text, x.toFloat(), y.toFloat(), color)
 
     override fun isGameFontRenderer(): Boolean = wrapped is FontRendererWrapper
 
